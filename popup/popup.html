@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JoyhouseBot</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header>
+    <div class="header-left">
+      <h1>JOY书童</h1>
+    </div>
+    <button id="gear-btn" class="gear-btn" title="打开设置">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.4 13a7.5 7.5 0 0 0 .06-2l2-1.5-2-3.4-2.4.9a7.5 7.5 0 0 0-1.7-1L15 3.5h-4l-.4 2.5a7.5 7.5 0 0 0-1.7 1l-2.4-.9-2 3.4 2 1.5a7.5 7.5 0 0 0 0 2l-2 1.5 2 3.4 2.4-.9a7.5 7.5 0 0 0 1.7 1l.4 2.5h4l.4-2.5a7.5 7.5 0 0 0 1.7-1l2.4.9 2-3.4-2-1.5zM13 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg>
+    </button>
+  </header>
+
+  <!-- 首次使用前的数据处理披露。2026-08-01 起 Chrome 要求所有数据收集均显著披露。 -->
+  <section id="consent-view" class="consent-view" hidden>
+    <p class="consent-eyebrow">开始使用前</p>
+    <h2>由你决定何时处理网页内容</h2>
+    <p class="consent-lead">JOY书童只会在你主动使用功能时，处理完成该功能所需的数据：</p>
+    <ul class="consent-list">
+      <li><strong>翻译与朗读：</strong>发送你选择的文字、当前页面地址及语言处理结果。</li>
+      <li><strong>采集与收藏：</strong>发送当前网页的标题、正文、图片和来源地址，保存到你的私人书房。</li>
+      <li><strong>登录与同步：</strong>处理账号标识和登录令牌，用于连接你的 JoyHouse 账号；扩展不会保存账号密码。</li>
+    </ul>
+    <p class="consent-note">数据通过 HTTPS 发送至 JoyHouse，以及完成当前请求所必需的 AI、翻译或语音服务。我们不出售个人数据，不用于个性化广告，也不会在后台持续记录浏览历史。</p>
+    <label class="consent-check">
+      <input id="consent-checkbox" type="checkbox">
+      <span>我已阅读并同意上述数据处理说明及<a id="privacy-link" href="https://joyhousebot.com/privacy/">隐私政策</a></span>
+    </label>
+    <button id="consent-accept" class="primary" disabled>同意并继续</button>
+    <p class="consent-foot">如果不同意，可以直接关闭侧边栏；扩展不会发送网页或账号数据。</p>
+  </section>
+
+  <!-- 登录视图 -->
+  <section id="login-view" hidden>
+    <p class="tip">用 Joyhouse 账号登录，翻译历史和生词本会同步到你的学习后端。</p>
+    <input id="account" type="text" placeholder="手机号或邮箱" autocomplete="username">
+    <input id="password" type="password" placeholder="密码" autocomplete="current-password">
+    <button id="login-btn" class="primary">登录</button>
+    <p id="login-error" class="error" hidden></p>
+    <p class="switch">没有账号?<button id="go-register" class="link">去注册</button></p>
+    <button id="wechat-login-btn" class="ghost">微信扫码登录</button>
+  </section>
+
+  <!-- 注册视图 -->
+  <section id="register-view" hidden>
+    <p class="tip">注册即登录:邮箱或手机号 + 密码,数据保存到你的账号。</p>
+    <input id="reg-name" type="text" placeholder="昵称(可选)">
+    <input id="reg-account" type="text" placeholder="手机号或邮箱" autocomplete="username">
+    <input id="reg-password" type="password" placeholder="密码(至少 6 位)" autocomplete="new-password">
+    <input id="reg-password2" type="password" placeholder="再输一遍密码" autocomplete="new-password">
+    <button id="register-btn" class="primary">注册并登录</button>
+    <p id="register-error" class="error" hidden></p>
+    <p class="switch">已有账号?<button id="go-login" class="link">去登录</button></p>
+    <button id="wechat-register-btn" class="ghost">微信扫码注册/登录</button>
+  </section>
+
+  <!-- 主视图 -->
+  <section id="main-view" hidden>
+    <div class="capture-card">
+      <p class="capture-title">把网页带回书房</p>
+      <p class="capture-tip">收藏之后,可以在 Joyhouse 里继续阅读、行动和复盘。</p>
+      <div class="capture-actions">
+        <button id="extract-page-btn" class="secondary">抓取正文</button>
+        <button id="clip-page-btn" class="primary">收藏本页</button>
+        <button id="open-library-btn" class="secondary">打开书房</button>
+      </div>
+      <p id="clip-result" class="ok" hidden></p>
+    </div>
+    <p class="hint">或在网页里划选文字点「译」,也可右键选 JoyhouseBot 菜单。</p>
+  </section>
+
+  <!-- 设置弹层:一级菜单 → 账号 / 隐私与数据二级页 -->
+  <div id="config-overlay" class="config-overlay" hidden>
+    <div class="config-card">
+      <div class="config-title">
+        <div class="config-title-left">
+          <button id="settings-back" class="settings-back" aria-label="返回" hidden>←</button>
+          <h2 id="settings-title">设置</h2>
+        </div>
+        <button id="config-close" class="config-close">×</button>
+      </div>
+
+      <section id="settings-root-panel" class="settings-panel">
+        <button id="account-settings-open" class="settings-item">
+          <span><strong>账号</strong><small id="account-summary">未登录</small></span>
+          <span class="settings-chevron">›</span>
+        </button>
+        <button id="privacy-settings-open" class="settings-item">
+          <span><strong>隐私与数据</strong><small id="privacy-summary">查看数据处理说明</small></span>
+          <span class="settings-chevron">›</span>
+        </button>
+      </section>
+
+      <section id="settings-account-panel" class="settings-panel" hidden>
+        <div class="account-card">
+          <span class="account-caption">当前账号</span>
+          <strong id="user-label">未登录</strong>
+        </div>
+        <button id="logout-btn" class="danger-button" hidden>退出当前账号</button>
+      </section>
+
+      <section id="settings-privacy-panel" class="settings-panel" hidden>
+        <div class="privacy-card">
+          <strong>当前数据处理状态</strong>
+          <p id="consent-status">已同意数据处理说明</p>
+        </div>
+        <p class="privacy-copy">翻译、朗读、采集或收藏只在你主动操作时发送所需文字、网页地址和图片；登录只保存会话令牌，不保存密码。</p>
+        <button id="open-privacy-btn" class="secondary settings-wide">查看隐私政策</button>
+        <button id="open-terms-btn" class="secondary settings-wide">查看服务条款</button>
+        <button id="revoke-consent-btn" class="danger-button">撤回同意并退出账号</button>
+      </section>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

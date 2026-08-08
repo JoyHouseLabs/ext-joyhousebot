@@ -1,0 +1,11 @@
+{
+  "extensionName": {
+    "message": "JoyhouseBot - JOY Companion"
+  },
+  "extensionDescription": {
+    "message": "Capture web content to JoyHouse, translate selections, read bilingually, listen, and save vocabulary."
+  },
+  "actionTitle": {
+    "message": "Open the JoyhouseBot side panel"
+  }
+}

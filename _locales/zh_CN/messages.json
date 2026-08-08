@@ -1,0 +1,11 @@
+{
+  "extensionName": {
+    "message": "JoyhouseBot - JOY书童"
+  },
+  "extensionDescription": {
+    "message": "采集网页到 JoyHouse，提供划词翻译、双语阅读、双语朗读和生词本。"
+  },
+  "actionTitle": {
+    "message": "打开 JoyhouseBot 侧边栏"
+  }
+}
