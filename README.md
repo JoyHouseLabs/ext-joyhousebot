@@ -25,7 +25,17 @@ Joyhouse 的浏览器采集与双语阅读入口:把网页内容带回书房,同
 - **数据处理同意**:首次登录或处理网页数据前，必须在扩展内阅读披露并主动同意；可在「设置 → 隐私与数据」撤回同意
 - **会话最小化**:登录令牌只保存在 Chrome 内存会话存储中，浏览器会话结束、退出或撤回同意时自动清除
 
-## 安装(开发者模式)
+## 安装（发布包）
+
+1. 从 [GitHub Releases](https://github.com/JoyHouseLabs/ext-joyhousebot/releases) 下载最新的 `joyhousebot-chrome-extension.zip`
+2. 解压 ZIP 到一个固定位置；不要直接把 ZIP 拖入 Chrome，也不要删除解压后的文件
+3. Chrome 打开 `chrome://extensions/`，右上角开启「开发者模式」
+4. 点击「加载已解压的扩展程序」，选择刚才解压后的文件夹（包含 `manifest.json`）
+5. 固定并点击工具栏中的 JoyhouseBot 图标，在右侧栏阅读数据处理说明并登录
+
+升级时，下载新版发布包并解压到新文件夹；然后在 `chrome://extensions/` 中移除旧版本或选择「重新加载」。
+
+## 从源码安装（开发者模式）
 
 1. Chrome 打开 `chrome://extensions/`,右上角开「开发者模式」
 2. 「加载已解压的扩展程序」→ 选本目录(`apps/ext-joyhousebot`)
